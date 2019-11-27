@@ -151,6 +151,8 @@ services:
     image: datastaxlabs/dse-cdc-server:6.8.0-20190925
     hostname: dse
     container_name: dse
+    ports:
+      - 9042:9042
     environment:
       - DS_LICENSE=accept
     volumes:

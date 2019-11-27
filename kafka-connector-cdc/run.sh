@@ -29,7 +29,7 @@ docker-compose exec broker kafka-topics --create --topic demo-topic --zookeeper 
 sleep 2
 
 curl -X POST -H "Content-Type: application/json" -d @source.json "http://localhost:8083/connectors"
-sleep 10
+sleep 5
 curl -X GET "http://localhost:8083/connectors/dse-source/status" | jq -c -M '[.name,.tasks[].state]' || true
 
 
@@ -40,4 +40,4 @@ sleep 2
 docker-compose exec dse dse advrep replog count --source-keyspace demo_ks --source-table demo_table --destination demo_destination
 sleep 10
 
-docker-compose exec broker kafka-console-consumer --topic demo-topic --from-beginning --bootstrap-server localhost:9092
+# docker-compose exec broker kafka-console-consumer --topic demo-topic --from-beginning --bootstrap-server localhost:9092
