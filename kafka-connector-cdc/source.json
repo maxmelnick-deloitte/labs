@@ -1,0 +1,12 @@
+{
+  "name": "dse-source",
+  "config": {
+    "connector.class": "com.datastax.kafkaconnector.source.DseSourceConnector",
+    "tasks.max": "10",
+    "key.conveter": "JsonConverter",
+    "value.converter": "JsonConverter",
+    "topic": "demo-topic",
+    "contact_points": "dse",
+    "destination": "demo_destination"
+  }
+}

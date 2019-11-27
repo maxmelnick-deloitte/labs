@@ -1,0 +1,9 @@
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('a', '1', 'b');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('a', '2', 'b');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('a', '3', 'b');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('c', '1', 'd');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('c', '2', 'd');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('c', '3', 'd');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('e', '1', 'f');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('e', '2', 'f');
+INSERT INTO demo_ks.demo_table (k, c, v) VALUES ('e', '3', 'f');

@@ -156,4 +156,6 @@ services:
     volumes:
       - ./cassandra.yaml:/config/cassandra.yaml
       - ./dse.yaml:/config/dse.yaml
+      - ./create_schema.cql:/tmp/create_schema.cql
+      - ./insert_data.cql:/tmp/insert_data.cql
 
