@@ -28,23 +28,42 @@ val df = spark
   .withColumn("value", from_json(col("value.payload"), payloadSchema))
   .select(col("key.*"), col("value.*"))
 
-// df.show(false)
-  // .select()
-  // .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
-  // .as[(String, String)]
-
 val q = df.writeStream
-            // .outputMode("update")
-            // .format("console")
-            // .option("truncate", "false")
             .foreachBatch { (batchDf: DataFrame, batchId: Long) => 
-                val existing = spark
+
+                // NOTE: the following commented code was one approach to ER that 
+                // regenerates the "resolved entity" each time a new transaction
+                // aligns to it
+                //
+                // val pkeys = batchDf.select("k").dropDuplicates().as[String].collect()
+                // println(s"num pkeys: ${pkeys.length}")
+                // val pKeyFilter = pkeys.map(x => s"k = '$x'").mkString(" OR ")
+                // val df = spark
+                //   .read
+                //   .format("org.apache.spark.sql.cassandra")
+                //   .options(Map( "table" -> "demo_table", "keyspace" -> "demo_ks"))
+                //   .load()
+                //   .filter(pKeyFilter)
+
+                val df = batchDf.withColumn("elems", map(col("c"), col("v")))
+                        .drop("c", "v")
+
+                df.show(false)
+
+                df.rdd.saveToCassandra("demo_ks", "demo_table_agg", SomeColumns("k", "elems" append))
+
+                val after = spark
                   .read
                   .format("org.apache.spark.sql.cassandra")
-                  .options(Map( "table" -> "demo_table", "keyspace" -> "demo_ks"))
+                  .options(Map( "table" -> "demo_table_agg", "keyspace" -> "demo_ks"))
                   .load()
-                batchDf.show(false)
+
+                after.show(false)
+
                 println(s"batchId: $batchId")
+
+                // .groupBy("value.id")
+                // .agg(collect_list("value"))
             }
             .start()
 

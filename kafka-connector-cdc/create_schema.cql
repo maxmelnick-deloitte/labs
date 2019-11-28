@@ -5,3 +5,9 @@ CREATE TABLE demo_ks.demo_table (
   v TEXT,
   PRIMARY KEY ((k), c)
 ) WITH CLUSTERING ORDER BY (c DESC);
+
+CREATE TABLE demo_ks.demo_table_agg (
+  k TEXT,
+  elems map<text, text>,
+  PRIMARY KEY (k)
+);

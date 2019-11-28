@@ -38,6 +38,6 @@ docker-compose exec dse cqlsh -f /tmp/insert_data.cql
 sleep 2
 
 docker-compose exec dse dse advrep replog count --source-keyspace demo_ks --source-table demo_table --destination demo_destination
-sleep 10
 
 # docker-compose exec broker kafka-console-consumer --topic demo-topic --from-beginning --bootstrap-server localhost:9092
+
