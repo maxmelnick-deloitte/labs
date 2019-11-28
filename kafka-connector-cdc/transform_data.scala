@@ -5,11 +5,19 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
 import com.datastax.spark.connector._
 import org.apache.spark.sql.cassandra._
+import spark.implicits._
+import org.apache.spark.sql.Encoders
 
-val keySchema = new StructType().add("k", StringType).add("c", StringType)
+
+// val mySchema = Encoders.product[MyCaseClass].schema
+
+case class Key(k: String, c: String)
+val keySchema = Encoders.product[Key].schema
+// val keySchema = new StructType().add("k", StringType).add("c", StringType)
 
 val schemaSchema = new StructType().add("type", StringType).add("optional", BooleanType)
 val payloadSchema = new StructType().add("v", StringType)
+val payloadSchemav2 = 
 
 val valSchema = new StructType().add("schema", schemaSchema)
                     .add("payload", StringType)
@@ -61,9 +69,6 @@ val q = df.writeStream
                 after.show(false)
 
                 println(s"batchId: $batchId")
-
-                // .groupBy("value.id")
-                // .agg(collect_list("value"))
             }
             .start()
 
