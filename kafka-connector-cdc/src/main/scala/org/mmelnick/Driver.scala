@@ -16,7 +16,7 @@ object Driver {
 
     AggTransactions.run(spark, conf)
 
-    spark.stop()
-    sys.exit(0)
+//    spark.stop()
+//    sys.exit(0)
   }
 }

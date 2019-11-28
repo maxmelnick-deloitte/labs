@@ -73,6 +73,8 @@ object AggTransactions {
         println(s"batchId: $batchId")
       }
       .start()
+
+    q.awaitTermination()
   }
 }
 
