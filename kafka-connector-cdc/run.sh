@@ -27,7 +27,7 @@ sleep 5
 docker-compose exec broker kafka-topics --create --topic demo-topic --zookeeper zookeeper:2181 --partitions 10 --replication-factor 1
 sleep 2
 
-curl -X POST -H "Content-Type: application/json" "http://localhost:8083/connectors"
+curl -X POST -H "Content-Type: application/json" "http://localhost:8083/connectors" \
 --data-binary @- << EOF
 {
   "name": "dse-source",

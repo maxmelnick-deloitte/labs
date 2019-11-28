@@ -16,5 +16,5 @@ docker run --tty \
   --network kafka-connector-cdc_default \
   edenhill/kafkacat:1.5.0 \
   kafkacat -b broker:29092 -C -K: \
-    -f '\nKey (%K bytes): %k\t\nValue (%S bytes): %s\n\Partition: %p\tOffset: %o\n--\n' \
+    -f '\nKey (%K bytes): %k\t\nValue (%S bytes): %s\n\Partition: %p\tOffset: %o\nHeader: %h\n--\n' \
     -t ${TOPIC}
