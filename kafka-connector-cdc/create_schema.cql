@@ -11,3 +11,15 @@ CREATE TABLE demo_ks.demo_table_agg (
   elems map<text, text>,
   PRIMARY KEY (k)
 );
+
+CREATE TYPE demo_ks.demo_type (
+  name TEXT,
+  phone TEXT
+);
+
+CREATE TABLE demo_ks.demo_table_udt (
+  k TEXT,
+  c TEXT,
+  elem demo_ks.demo_type,
+  PRIMARY KEY ((k), c)
+) WITH CLUSTERING ORDER BY (c DESC);

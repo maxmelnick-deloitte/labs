@@ -20,7 +20,7 @@ sleep 10
 docker-compose exec dse dse advrep destination list
 
 
-docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table --destination demo_destination --transmission-enabled true --collection-enabled true
+docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table_udt --destination demo_destination --transmission-enabled true --collection-enabled true
 sleep 10
 docker-compose exec dse dse advrep channel status
 sleep 5
@@ -36,8 +36,6 @@ curl -X GET "http://localhost:8083/connectors/dse-source/status" | jq -c -M '[.n
 docker-compose exec dse cqlsh -f /tmp/insert_data.cql
 
 sleep 2
-
-docker-compose exec dse dse advrep replog count --source-keyspace demo_ks --source-table demo_table --destination demo_destination
 
 # docker-compose exec broker kafka-console-consumer --topic demo-topic --from-beginning --bootstrap-server localhost:9092
 
