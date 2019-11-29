@@ -17,13 +17,6 @@ CREATE TYPE demo_ks.demo_type (
   phone TEXT
 );
 
-CREATE TABLE demo_ks.demo_table_udt (
-  k TEXT,
-  c TEXT,
-  elem demo_ks.demo_type,
-  PRIMARY KEY ((k), c)
-) WITH CLUSTERING ORDER BY (c DESC);
-
 CREATE TABLE demo_ks.demo_table_udt_agg (
   k TEXT,
   elems map<text, frozen<demo_ks.demo_type>>,
