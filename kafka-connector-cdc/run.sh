@@ -19,7 +19,7 @@ docker-compose exec dse dse advrep destination create --name demo_destination --
 sleep 2
 docker-compose exec dse dse advrep destination list
 
-docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table_udt --destination demo_destination --transmission-enabled true --collection-enabled true
+docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table --destination demo_destination --transmission-enabled true --collection-enabled true
 sleep 2
 docker-compose exec dse dse advrep channel status
 sleep 5
@@ -50,7 +50,7 @@ docker-compose exec dse dse advrep destination create --name agg_destination --t
 sleep 2
 docker-compose exec dse dse advrep destination list
 
-docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table_udt_agg --destination agg_destination --transmission-enabled true --collection-enabled true
+docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table demo_table_agg --destination agg_destination --transmission-enabled true --collection-enabled true
 sleep 2
 docker-compose exec dse dse advrep channel status
 sleep 5
