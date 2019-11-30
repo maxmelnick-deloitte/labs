@@ -22,3 +22,20 @@ CREATE TABLE demo_ks.demo_table_udt_agg (
   elems map<text, frozen<demo_ks.demo_type>>,
   PRIMARY KEY (k)
 );
+
+CREATE TYPE demo_ks.entity (
+  id text,
+  elem_id text,
+  source text,
+  properties text
+)
+
+CREATE TABLE demo_ks.transactions (
+  id text,
+  entity demo_ks.entity
+)
+
+CREATE TABLE demo_ks.resolved (
+  id text,
+  entities list<demo_ks.entity>
+)

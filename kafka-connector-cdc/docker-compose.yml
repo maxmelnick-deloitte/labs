@@ -184,3 +184,14 @@ services:
     ports:
       - "5601:5601"
 
+  streamsets:
+    container_name: streamsets
+    image: streamsets/datacollector
+    command: dc
+    ulimits:
+      nofile:
+        soft: 32769
+        hard: 32769
+    ports:
+      - 18630:18630
+

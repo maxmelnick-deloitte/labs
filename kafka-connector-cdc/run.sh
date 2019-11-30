@@ -76,6 +76,36 @@ sleep 5
 curl -X GET "http://localhost:8083/connectors/agg-source/status" | jq -c -M '[.name,.tasks[].state]' || true
 
 
+docker-compose exec dse dse advrep destination create --name transactions_destination --transmission-enabled true
+sleep 2
+docker-compose exec dse dse advrep destination list
+
+docker-compose exec dse dse advrep channel create --data-center-id dc1 --source-keyspace demo_ks --source-table transactions --destination transactions_destination --transmission-enabled true --collection-enabled true
+sleep 2
+docker-compose exec dse dse advrep channel status
+sleep 5
+
+docker-compose exec broker kafka-topics --create --topic transactions-topic --zookeeper zookeeper:2181 --partitions 10 --replication-factor 1
+sleep 2
+curl -X POST -H "Content-Type: application/json" "http://localhost:8083/connectors" \
+--data-binary @- << EOF
+{
+  "name": "transactions-source",
+  "config": {
+    "connector.class": "com.datastax.kafkaconnector.source.DseSourceConnector",
+    "tasks.max": "10",
+    "key.conveter": "JsonConverter",
+    "value.converter": "JsonConverter",
+    "topic": "transactions-topic",
+    "contact_points": "dse",
+    "destination": "transactions_destination"
+  }
+}
+EOF
+sleep 5
+curl -X GET "http://localhost:8083/connectors/transactions-source/status" | jq -c -M '[.name,.tasks[].state]' || true
+
+
 docker-compose exec dse cqlsh -f /tmp/insert_data.cql
 
 sleep 2
