@@ -28,14 +28,14 @@ CREATE TYPE demo_ks.entity (
   elem_id text,
   source text,
   properties text
-)
+);
 
 CREATE TABLE demo_ks.transactions (
   id text,
   entity demo_ks.entity
-)
+);
 
 CREATE TABLE demo_ks.resolved (
   id text,
   entities list<demo_ks.entity>
-)
+);
