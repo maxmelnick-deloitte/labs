@@ -37,5 +37,5 @@ CREATE TABLE demo_ks.transactions (
 
 CREATE TABLE demo_ks.resolved (
   id text PRIMARY KEY,
-  entities list<demo_ks.entity>
+  entities list<frozen<demo_ks.entity>>
 );
