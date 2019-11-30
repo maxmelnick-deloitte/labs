@@ -31,11 +31,11 @@ CREATE TYPE demo_ks.entity (
 );
 
 CREATE TABLE demo_ks.transactions (
-  id text,
+  id text PRIMARY KEY,
   entity demo_ks.entity
 );
 
 CREATE TABLE demo_ks.resolved (
-  id text,
+  id text PRIMARY KEY,
   entities list<demo_ks.entity>
 );
