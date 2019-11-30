@@ -8,6 +8,10 @@ docker-compose up -d
 
 mvn clean package
 
+docker-compose exec streamsets /opt/streamsets-datacollector-3.11.0/bin/streamsets stagelibs -install=streamsets-datacollector-apache-kafka_2_0-lib
+sleep 5
+docker-compose restart streamsets
+
 echo "Waiting for DSE to be available"
 while ! docker-compose exec dse cqlsh -e 'describe cluster' ; do
     sleep 5
