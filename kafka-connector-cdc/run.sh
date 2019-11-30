@@ -6,6 +6,8 @@ sudo service dse stop || true
 
 docker-compose up -d
 
+mvn clean package
+
 echo "Waiting for DSE to be available"
 while ! docker-compose exec dse cqlsh -e 'describe cluster' ; do
     sleep 5
@@ -108,7 +110,7 @@ curl -X GET "http://localhost:8083/connectors/transactions-source/status" | jq -
 
 docker-compose exec dse cqlsh -f /tmp/insert_data.cql
 
-sleep 2
+./spark-2.4.4-bin-hadoop2.7/bin/spark-submit --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2,org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4 --class org.mmelnick.Driver ./target/dse-kafka-cdc-test-0.1-SNAPSHOT-jar-with-dependencies.jar
 
 # docker-compose exec broker kafka-console-consumer --topic demo-topic --from-beginning --bootstrap-server localhost:9092
 

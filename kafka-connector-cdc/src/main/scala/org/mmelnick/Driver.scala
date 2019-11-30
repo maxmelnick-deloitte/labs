@@ -14,7 +14,9 @@ object Driver {
     // by default this loads the config from src/main/resources/application.conf
     val conf: Config = ConfigFactory.load()
 
-    AggTransactions.run(spark, conf)
+//    AggTransactions.run(spark, conf)
+
+    GraphWriter.run(spark)
 
     spark.stop()
     sys.exit(0)
