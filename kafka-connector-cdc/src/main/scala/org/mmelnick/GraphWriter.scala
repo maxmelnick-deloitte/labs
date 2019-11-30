@@ -9,8 +9,6 @@ case class TransactionKey(id: String)
 
 case class Entity(id: String, elem_id: String, source: String, properties: String)
 
-case class ValueSchema(`type`: String, optional: Boolean)
-
 case class TransactionValuePayload(entity: Entity)
 
 object GraphWriter {
