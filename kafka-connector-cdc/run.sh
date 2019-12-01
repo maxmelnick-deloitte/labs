@@ -9,6 +9,7 @@ docker-compose up -d
 mvn clean package
 
 docker-compose exec streamsets /opt/streamsets-datacollector-3.11.0/bin/streamsets stagelibs -install=streamsets-datacollector-apache-kafka_2_0-lib
+docker-compose exec streamsets /opt/streamsets-datacollector-3.11.0/bin/streamsets stagelibs -install=streamsets-datacollector-cassandra_3-lib
 sleep 5
 docker-compose restart streamsets
 
@@ -20,6 +21,27 @@ echo "DSE is now available"
 
 docker-compose exec dse cqlsh -f /tmp/create_schema.cql
 sleep 2
+
+docker-compose exec broker kafka-topics --create --topic transactions --zookeeper zookeeper:2181 --partitions 10 --replication-factor 1
+sleep 2
+
+curl -X POST -H "Content-Type: application/json" "http://localhost:8083/connectors" \
+--data-binary @- << EOF
+{
+  "name": "dse-sink",
+  "config": {
+    "connector.class": "com.datastax.kafkaconnector.DseSinkConnector",
+    "tasks.max": "10",
+    "topics": "transactions",
+    "contactPoints": "dse",
+    "loadBalancing.localDc": "dc1",
+    "topic.transactions.demo_ks.transactions.mapping": "id=value.id, entity=value.entity",
+    "topic.transactions.demo_ks.transactions.consistencyLevel": "LOCAL_QUORUM"
+  }
+}
+EOF
+sleep 5
+curl -X GET "http://localhost:8083/connectors/dse-sink/status" | jq -c -M '[.name,.tasks[].state]' || true
 
 docker-compose exec dse dse advrep destination create --name demo_destination --transmission-enabled true
 sleep 2
