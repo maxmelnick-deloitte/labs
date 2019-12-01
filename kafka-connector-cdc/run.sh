@@ -11,7 +11,10 @@ mvn clean package
 docker-compose exec streamsets /opt/streamsets-datacollector-3.11.0/bin/streamsets stagelibs -install=streamsets-datacollector-apache-kafka_2_0-lib
 docker-compose exec streamsets /opt/streamsets-datacollector-3.11.0/bin/streamsets stagelibs -install=streamsets-datacollector-cassandra_3-lib
 sleep 5
+docker-compose exec streamsets sudo chown -R sdc:sdc /data
+sleep 2
 docker-compose restart streamsets
+
 
 echo "Waiting for DSE to be available"
 while ! docker-compose exec dse cqlsh -e 'describe cluster' ; do
@@ -133,8 +136,7 @@ EOF
 sleep 5
 curl -X GET "http://localhost:8083/connectors/transactions-source/status" | jq -c -M '[.name,.tasks[].state]' || true
 
-
-#docker-compose exec dse cqlsh -f /tmp/insert_data.cql
+docker-compose exec dse cqlsh -f /tmp/insert_data.cql
 
 ./spark-2.4.4-bin-hadoop2.7/bin/spark-submit --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.2,org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4 --class org.mmelnick.Driver ./target/dse-kafka-cdc-test-0.1-SNAPSHOT-jar-with-dependencies.jar
 

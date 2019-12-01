@@ -53,6 +53,11 @@ object GraphWriter {
 
         after.show(false)
 
+        after.withColumn("numentities", size(col("entities")))
+          .select("id", "numentities")
+          .sort(desc("numentities"))
+          .show(false)
+
         println(s"batchId: $batchId")
       }
       .start()
